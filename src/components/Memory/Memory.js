@@ -8,8 +8,7 @@ import pigeon from "../Images/pigeon.jpg";
 import rabbit from "../Images/rabbit.jpg";
 import starfish from "../Images/starfish.jpg";
 import white from "../Images/white.jpg";
-
-import Image from "../Memory/Image";
+import Card from "./Card";
 
 const cardData = [
   {
@@ -74,37 +73,21 @@ const cardData = [
   },
 ];
 const Memory = function () {
-  const [choosenCards, setChoosenCards] = useState([]);
-
-  const choosenCardsHandler = function (value) {
-    setChoosenCards((prev) => {
-      return [...prev, value.name];
-    });
-  };
-
-  console.log(choosenCards);
-
   return (
     <Grid>
-      {cardData.map((card, i) => (
-        <Image
-          onChoosen={choosenCardsHandler}
-          image={card.img}
-          key={card.id}
-          name={card.name}
-          id={i}
-          currentCards={choosenCards}
-        />
+      {cardData.map((card) => (
+        <Card key={card.id} id={card.id} image={card.img} name={card.name} />
       ))}
     </Grid>
   );
 };
 
-export default Memory;
-
 const Grid = styled.ul`
   list-style: none;
   display: grid;
+  align-content: center;
   grid-template-columns: repeat(3, 120px);
-  gap: 0.5rem;
+  grid-gap: 1rem;
 `;
+
+export default Memory;

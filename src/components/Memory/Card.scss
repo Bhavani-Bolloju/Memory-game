@@ -3,6 +3,10 @@
   height: 120px;
   position: relative;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   img {
     display: block;
     width: 100%;
@@ -12,7 +16,6 @@
     z-index: 2;
     transition: all 1s;
     backface-visibility: hidden;
-    // transform: rotateY(-180deg);
   }
 
   div {
