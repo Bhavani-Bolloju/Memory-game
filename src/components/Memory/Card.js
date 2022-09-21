@@ -4,15 +4,19 @@ import "./Card.scss";
 function Card(props) {
   const [flip, setFlip] = useState(false);
 
-  const cardHandler = function () {
-    setFlip(true);
+  const { choosenCards } = props;
 
-    setTimeout(() => {
-      setFlip(false);
-    }, 1000);
+  const cardHandler = function () {
+    props.onCards({ id: props.id, pos: props.position });
   };
 
-  const cardClass = flip ? "item active" : "item inactive";
+  // useEffect(() => {
+  //   setTimeout(() => {
+
+  //   }, 800);
+  // }, [choosenCards]);
+
+  const cardClass = props.cardStatus ? "item active" : "item inactive";
 
   return (
     <li className={cardClass} key={props.id} onClick={cardHandler}>

@@ -2,6 +2,7 @@
   width: 100%;
   height: 120px;
   position: relative;
+  backface-visibility: none;
 
   &:hover {
     cursor: pointer;
