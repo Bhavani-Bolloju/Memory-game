@@ -103,6 +103,8 @@ const cardReducer = function (initialValue, action) {
     } else {
       id = [...initialValue.cardsChoosen, action.val.id];
       pos = [...initialValue.cardsPosition, action.val.pos];
+
+      // console.log(initialValue.cardsChoosen, action.val.id);
     }
 
     cardsData[action.val.pos].status = "active";
@@ -110,81 +112,45 @@ const cardReducer = function (initialValue, action) {
     return {
       cardsChoosen: id,
       cardsPosition: pos,
-      data: dummy_data,
+      data: cardsData,
     };
-
-    // console.log(
-
-    //
-    // );
-    // return {
-    //   cardsChoosen: [action.val.id],
-    //   cardsPosition: [action.val.pos],
-    //   data: dummy_data,
-    // };
   }
 
+  //mismatched
+
+  if (action.type === "MISMATCHED") {
+    const wrongCards = action.val;
+    const cards = [...initialValue.data];
+
+    cards[wrongCards[0]].status = "active wrong";
+    cards[wrongCards[1]].status = "active wrong";
+    // console.log(cards);
+  }
   return initialValue;
 };
 
+//MEMORY FUNCTIONS:
 const Memory = function () {
-  // const [choosenCards, setChoosenCards] = useState([]);
-  // const [cardPosition, setCardPosition] = useState([]);
-  // const [data, setData] = useState(dummy_data);
   const [cards, dispatchCardAction] = useReducer(cardReducer, initialValue);
 
-  console.log(cards);
+  const { cardsChoosen, cardsPosition } = cards;
 
   const choosenCardsHandler = function (value) {
     dispatchCardAction({ type: "CARD", val: value });
-
-    // setChoosenCards((prev) => {
-    //   if (prev.length < 2) {
-    //     return [...prev, value.id];
-    //   } else {
-    //     return [value.id];
-    //   }
-    // });
-
-    // setCardPosition((prev) => {
-    //   if (prev.length < 2) {
-    //     return [...prev, value.pos];
-    //   } else {
-    //     return [value.pos];
-    //   }
-    // });
   };
 
-  // useEffect(() => {
-  //   if (choosenCards[0] === choosenCards[1] && choosenCards.length > 0) {
-  //     // dummy_data[cardPosition[0]].status = "correct";
-  //     // dummy_data[cardPosition[1]].status = "correct";
-  //     const pos1 = cardPosition[0];
-  //     const pos2 = cardPosition[1];
-
-  //     const firstStatus = data[pos1];
-  //     const secondStatus = data[pos2];
-  //     firstStatus.status = "correct";
-  //     secondStatus.status = "correct";
-
-  //     setData((prev) => {
-  //       return [...prev, firstStatus, secondStatus];
-  //     });
-  //   } else if (
-  //     choosenCards.length === 2 &&
-  //     choosenCards[0] !== choosenCards[1]
-  //   ) {
-  //     dummy_data[cardPosition[0]].status = "wrong";
-  //     dummy_data[cardPosition[1]].status = "wrong";
-  //   }
-  // }, [choosenCards, data, cardPosition]);
+  useEffect(() => {
+    if (cardsChoosen.length === 2 && cardsChoosen[0] !== cardsChoosen[1]) {
+      dispatchCardAction({ type: "MISMATCHED", val: cardsPosition });
+    }
+  }, [cardsChoosen, cardsPosition]);
 
   return (
     <Grid>
       {cards.data.map((card, i) => (
         <Card
           onCards={choosenCardsHandler}
-          // choosenCards={choosenCards}
+          choosenCards={cards.cardsChoosen}
           cardStatus={card.status}
           key={i}
           card={card}

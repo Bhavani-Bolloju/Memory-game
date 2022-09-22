@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./Card.scss";
 
 function Card(props) {
-  const [flip, setFlip] = useState(false);
-
-  const { choosenCards } = props;
+  const { choosenCards, cardStatus } = props;
 
   const cardHandler = function () {
     props.onCards({ id: props.id, pos: props.position });
   };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
+  useEffect(() => {}, [cardStatus]);
 
-  //   }, 800);
-  // }, [choosenCards]);
+  console.log(cardStatus);
 
-  const cardClass = props.cardStatus ? "item active" : "item inactive";
+  const cardClass =
+    props.cardStatus === "active" ? "item active" : "item inactive";
 
   return (
     <li className={cardClass} key={props.id} onClick={cardHandler}>
