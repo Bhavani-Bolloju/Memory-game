@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import "./Card.scss";
 
 function Card(props) {
-  const { choosenCards, cardStatus } = props;
+  // const [flip, setFlip] = useState(false);
 
   const cardHandler = function () {
-    props.onCards({ id: props.id, pos: props.position });
+    // setFlip(true);
+    props.onCards(props.position);
   };
 
-  useEffect(() => {}, [cardStatus]);
+  let cardClass = "item inactive";
 
-  console.log(cardStatus);
+  if (props.cardStatus === "active") {
+    cardClass = "item active";
+  }
 
-  const cardClass =
-    props.cardStatus === "active" ? "item active" : "item inactive";
-
+  if (props.cardStatus === "wrong") {
+    cardClass = "item inactive";
+  }
   return (
     <li className={cardClass} key={props.id} onClick={cardHandler}>
       <img src={props.image} alt={props.name} />
