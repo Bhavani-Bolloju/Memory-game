@@ -13,175 +13,99 @@ import { act } from "react-dom/test-utils";
 
 const dummy_data = [
   {
-    name: "bird",
     img: bird,
     id: "1",
     status: "",
   },
   {
-    name: "bird",
     img: bird,
     id: "1",
     status: "",
   },
   {
-    name: "cat",
     img: cat,
     id: "2",
     status: "",
   },
   {
-    name: "cat",
     img: cat,
     id: "2",
     status: "",
   },
   {
-    name: "dog",
     img: dog,
     id: "3",
     status: "",
   },
   {
-    name: "dog",
     img: dog,
     id: "3",
     status: "",
   },
   {
-    name: "pigeon",
     img: pigeon,
     id: "4",
     status: "",
   },
   {
-    name: "pigeon",
     img: pigeon,
     id: "4",
     status: "",
   },
   {
-    name: "rabbit",
     img: rabbit,
     id: "5",
     status: "",
   },
   {
-    name: "rabbit",
     img: rabbit,
     id: "5",
     status: "",
   },
   {
-    name: "starfish",
     img: starfish,
     id: "6",
     status: "",
   },
   {
-    name: "starfish",
     img: starfish,
     id: "6",
     status: "",
   },
-];
-const initialValue = {
-  cardsChoosen: [],
-  cardsPosition: [],
-  data: dummy_data,
-};
-
-const cardReducer = function (initialValue, action) {
-  if (action.type === "CARD") {
-    let id;
-    let pos;
-    const cardsData = [...initialValue.data];
-
-    if (initialValue.cardsPosition.length > 1) {
-      id = [action.val.id];
-      pos = [action.val.pos];
-    } else {
-      id = [...initialValue.cardsChoosen, action.val.id];
-      pos = [...initialValue.cardsPosition, action.val.pos];
-    }
-
-    cardsData[action.val.pos].status = "active";
-
-    return {
-      cardsChoosen: id,
-      cardsPosition: pos,
-      data: dummy_data,
-    };
-
-    // console.log(
-
-    //
-    // );
-    // return {
-    //   cardsChoosen: [action.val.id],
-    //   cardsPosition: [action.val.pos],
-    //   data: dummy_data,
-    // };
-  }
-
-  return initialValue;
-};
+].sort(() => Math.random() - 0.5);
 
 const Memory = function () {
-  // const [choosenCards, setChoosenCards] = useState([]);
-  // const [cardPosition, setCardPosition] = useState([]);
-  // const [data, setData] = useState(dummy_data);
-  const [cards, dispatchCardAction] = useReducer(cardReducer, initialValue);
-
-  console.log(cards);
+  const [cards, setCards] = useState(dummy_data);
+  const [choosenCards, setChoosenCards] = useState([]);
 
   const choosenCardsHandler = function (value) {
-    dispatchCardAction({ type: "CARD", val: value });
+    const data = [...cards];
+    const updatedData = [...data];
+    data[value].status = "active";
+    setCards(data);
 
-    // setChoosenCards((prev) => {
-    //   if (prev.length < 2) {
-    //     return [...prev, value.id];
-    //   } else {
-    //     return [value.id];
-    //   }
-    // });
+    if (choosenCards.length > 1) {
+      setChoosenCards([value]);
+    } else {
+      setChoosenCards((prev) => {
+        return [...prev, value];
+      });
+    }
 
-    // setCardPosition((prev) => {
-    //   if (prev.length < 2) {
-    //     return [...prev, value.pos];
-    //   } else {
-    //     return [value.pos];
-    //   }
-    // });
+    if (choosenCards.length === 1 && data[choosenCards].id !== data[value].id) {
+      setTimeout(() => {
+        updatedData[choosenCards].status = "wrong";
+        updatedData[value].status = "wrong";
+        setCards(updatedData);
+      }, 1000);
+    }
   };
 
-  // useEffect(() => {
-  //   if (choosenCards[0] === choosenCards[1] && choosenCards.length > 0) {
-  //     // dummy_data[cardPosition[0]].status = "correct";
-  //     // dummy_data[cardPosition[1]].status = "correct";
-  //     const pos1 = cardPosition[0];
-  //     const pos2 = cardPosition[1];
-
-  //     const firstStatus = data[pos1];
-  //     const secondStatus = data[pos2];
-  //     firstStatus.status = "correct";
-  //     secondStatus.status = "correct";
-
-  //     setData((prev) => {
-  //       return [...prev, firstStatus, secondStatus];
-  //     });
-  //   } else if (
-  //     choosenCards.length === 2 &&
-  //     choosenCards[0] !== choosenCards[1]
-  //   ) {
-  //     dummy_data[cardPosition[0]].status = "wrong";
-  //     dummy_data[cardPosition[1]].status = "wrong";
-  //   }
-  // }, [choosenCards, data, cardPosition]);
+  // console.log(cards);ś
 
   return (
     <Grid>
-      {cards.data.map((card, i) => (
+      {cards.map((card, i) => (
         <Card
           onCards={choosenCardsHandler}
           // choosenCards={choosenCards}
