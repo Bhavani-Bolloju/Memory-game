@@ -1,0 +1,61 @@
+.Card {
+  position: relative;
+  transition: all 1s;
+
+  .img {
+    width: 10rem;
+    height: 10rem;
+    transition: transform 0.8s;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+    }
+  }
+
+  .back {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, #ddf8ff, #88e6ff);
+    transition: transform 0.8s;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  }
+
+  &.active {
+    .img {
+      transform: rotateY(0deg);
+    }
+    .back {
+      transform: rotateY(-180deg);
+    }
+  }
+
+  &.active.correct {
+    img {
+      backdrop-filter: contrast(0.7);
+    }
+  }
+
+  &.inactive {
+    .back {
+      transform: rotateY(0deg);
+    }
+
+    .img {
+      transform: rotateY(-180deg);
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    .back {
+      box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.4);
+    }
+  }
+}

@@ -8,6 +8,11 @@ function GridCards(props) {
 
   const choosenCardsHandler = function (position) {
     const updatedCards = [...cards];
+    updatedCards[position].status = "active";
+    setCards(updatedCards);
+
+    const data = [...cards];
+    const matchData = [...cards];
 
     if (choosenCards.length > 1) {
       setChoosenCards([position]);
@@ -17,11 +22,36 @@ function GridCards(props) {
       });
     }
 
-    updatedCards[position].status = "active";
-    setCards(updatedCards);
+    if (choosenCards.length === 1 && choosenCards[0] === position) {
+      setChoosenCards([choosenCards[0]]);
+    }
+
+    if (
+      choosenCards.length === 1 &&
+      data[choosenCards[0]].id !== data[position].id
+    ) {
+      setTimeout(() => {
+        data[choosenCards[0]].status = "wrong";
+        data[position].status = "wrong";
+        setCards(data);
+      }, 1000);
+    }
+
+    if (
+      choosenCards.length === 1 &&
+      matchData[choosenCards[0]].id === matchData[position].id
+    ) {
+      console.log(choosenCards.length);
+
+      setTimeout(() => {
+        matchData[choosenCards[0]].status = "active correct";
+        matchData[position].status = "active correct";
+        setCards(matchData);
+      }, 500);
+    }
   };
 
-  console.log(cards);
+  console.log(choosenCards);
 
   return (
     <Layout>
@@ -30,7 +60,7 @@ function GridCards(props) {
           img={item.img}
           key={i}
           id={i}
-          active={item.status}
+          status={item.status}
           onSelect={choosenCardsHandler}
         />
       ))}
