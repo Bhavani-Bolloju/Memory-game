@@ -14,6 +14,7 @@ function GridCards(props) {
     const data = [...cards];
     const matchData = [...cards];
 
+    //adding to the list
     if (choosenCards.length > 1) {
       setChoosenCards([position]);
     } else {
@@ -22,9 +23,13 @@ function GridCards(props) {
       });
     }
 
+    //if same card choosen twice
+
     if (choosenCards.length === 1 && choosenCards[0] === position) {
       setChoosenCards([choosenCards[0]]);
     }
+
+    //if wrong cards
 
     if (
       choosenCards.length === 1 &&
@@ -37,12 +42,13 @@ function GridCards(props) {
       }, 1000);
     }
 
+    //if correct cards
+
     if (
       choosenCards.length === 1 &&
-      matchData[choosenCards[0]].id === matchData[position].id
+      matchData[choosenCards[0]].id === matchData[position].id &&
+      choosenCards[0] !== position
     ) {
-      console.log(choosenCards.length);
-
       setTimeout(() => {
         matchData[choosenCards[0]].status = "active correct";
         matchData[position].status = "active correct";
@@ -51,7 +57,7 @@ function GridCards(props) {
     }
   };
 
-  console.log(choosenCards);
+  // console.log(choosenCards);
 
   return (
     <Layout>
