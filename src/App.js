@@ -12,6 +12,7 @@ import fox from "../src/components/Images/fox.png";
 import mammoth from "../src/components/Images/mammoth.png";
 // import raccoon from "../src/components/Images/raccoon.png";
 import bear from "../src/components/Images/bear.png";
+import Overlay from "./components/UI/Overlay";
 
 const cards_data = [
   {
@@ -94,14 +95,17 @@ const cards_data = [
     id: "8",
     status: "",
   },
-];
-// .sort(() => Math.random() - 0.5);
+].sort(() => Math.random() - 0.5);
 
 function App() {
+  const scoreHandler = function (value) {
+    console.log(value);
+  };
+
   return (
     <Wrapper>
-      <h1 style={{ padding: "2rem", color: "white" }}>Memory Game</h1>
-      <GridCards cardsData={cards_data} />
+      <h1>Memory Game</h1>
+      <GridCards onScore={scoreHandler} cardsData={cards_data} />
     </Wrapper>
   );
 }
@@ -110,11 +114,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  padding: 5rem 0;
 
   h1 {
-    margin: 1.5rem 0;
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 400;
+    color: white;
+    text-transform: uppercase;
   }
 `;
 
