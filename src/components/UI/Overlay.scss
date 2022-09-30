@@ -1,0 +1,46 @@
+.Overlay {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 100%;
+  background-color: #33333344;
+  text-align: center;
+  padding: 4rem 0;
+  font-size: 5rem;
+  margin: auto;
+  color: #01191f;
+}
+
+.Overlay-enter {
+  animation: enter 0.5s ease-in;
+}
+
+.Overlay-exit {
+  animation: exit 0.5s ease-out;
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-150%);
+  }
+  80% {
+    opacity: 0.8;
+    transform: translateY(20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@keyframes exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-150%);
+  }
+}

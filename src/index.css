@@ -1,15 +1,20 @@
-*,
-*::after,
-*::before {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  width: 100vh;
-  height: 100vh;
-  background: linear-gradient(#457fca, #5691c8);
-  margin: auto;
-  /* padding: 0; */
+  font-size: 1.6rem;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right bottom, #92fe9d, #00c9ff);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
