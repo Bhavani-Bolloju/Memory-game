@@ -93,8 +93,7 @@ const cards_data = [
     id: "8",
     status: "",
   },
-];
-// .sort(() => Math.random() - 0.5);
+].sort(() => Math.random() - 0.5);
 
 const initialValue = {
   data: cards_data,
@@ -159,8 +158,7 @@ const cardReducer = function (initialValue, action) {
   //reset Game
 
   if (action.type === "RESET") {
-    const updatedCards = [...initialValue.data];
-    // .sort(() => Math.random() - 0.5);
+    const updatedCards = [...initialValue.data].sort(() => Math.random() - 0.5);
     const resetStatus = updatedCards.map((item) => {
       return { ...item, status: "" };
     });
