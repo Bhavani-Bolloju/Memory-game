@@ -1,95 +1,225 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import styled from "styled-components";
 import Card from "./Card";
 import Overlay from "../UI/Overlay";
 
-function GridCards(props) {
-  const [cards, setCards] = useState(props.cardsData);
-  const [choosenCards, setChoosenCards] = useState([]);
-  const [score, setScore] = useState(0);
-  const [completed, setCompleted] = useState(0);
+import whale from "../Images/whale.png";
+import lion from "../Images/lion.png";
+import trex from "../Images/t-rex.png";
+import turtle from "../Images/turtle.png";
+import koala from "../Images/koala.png";
+import fox from "../Images/fox.png";
+import mammoth from "../Images/mammoth.png";
+import raccoon from "../Images/raccoon.png";
 
-  const choosenCardsHandler = function (position) {
-    const updatedCards = [...cards];
-    updatedCards[position].status = "active";
-    setCards(updatedCards);
+const cards_data = [
+  {
+    img: whale,
+    id: "1",
+    status: "",
+  },
+  {
+    img: whale,
+    id: "1",
+    status: "",
+  },
+  {
+    img: lion,
+    id: "2",
+    status: "",
+  },
+  {
+    img: lion,
+    id: "2",
+    status: "",
+  },
+  {
+    img: trex,
+    id: "3",
+    status: "",
+  },
+  {
+    img: trex,
+    id: "3",
+    status: "",
+  },
+  {
+    img: fox,
+    id: "4",
+    status: "",
+  },
+  {
+    img: fox,
+    id: "4",
+    status: "",
+  },
+  {
+    img: koala,
+    id: "5",
+    status: "",
+  },
+  {
+    img: koala,
+    id: "5",
+    status: "",
+  },
+  {
+    img: raccoon,
+    id: "6",
+    status: "",
+  },
+  {
+    img: raccoon,
+    id: "6",
+    status: "",
+  },
+  {
+    img: mammoth,
+    id: "7",
+    status: "",
+  },
+  {
+    img: mammoth,
+    id: "7",
+    status: "",
+  },
+  {
+    img: turtle,
+    id: "8",
+    status: "",
+  },
+  {
+    img: turtle,
+    id: "8",
+    status: "",
+  },
+];
+// .sort(() => Math.random() - 0.5);
 
-    const data = [...cards];
-    const matchData = [...cards];
+const initialValue = {
+  data: cards_data,
+  matchPair: [],
+  attempts: 0,
+  complete: cards_data.length / 2,
+};
 
-    //adding to the list
-    if (choosenCards.length > 1) {
-      setChoosenCards([position]);
-    } else {
-      setChoosenCards((prev) => {
-        return [...prev, position];
-      });
+const cardReducer = function (initialValue, action) {
+  //active
+  if (action.type === "ACTIVE") {
+    const cardsData = [...initialValue.data];
+
+    cardsData[action.val].status = "active";
+
+    let updatedMatchPair;
+    updatedMatchPair = [...initialValue.matchPair, action.val];
+
+    if (initialValue.matchPair.length > 1) {
+      updatedMatchPair = [action.val];
     }
 
-    //if same card choosen twice
+    return {
+      data: cardsData,
+      matchPair: updatedMatchPair,
+      attempts: initialValue.attempts,
+      complete: initialValue.complete,
+    };
+  }
 
-    if (choosenCards.length === 1 && choosenCards[0] === position) {
-      setChoosenCards([choosenCards[0]]);
-    }
+  //matching pair
+  if (action.type === "CORRECT") {
+    const updatedData = [...initialValue.data];
+    updatedData[initialValue.matchPair[0]].status = "active correct";
+    updatedData[action.val].status = "active correct";
 
-    //if wrong cards
-    if (
-      choosenCards.length === 1 &&
-      data[choosenCards[0]].id !== data[position].id
-    ) {
-      setScore((prev) => prev + 1);
+    const updatedCompleteIn = initialValue.complete - 1;
 
-      setTimeout(() => {
-        data[choosenCards[0]].status = "wrong";
-        data[position].status = "wrong";
-        setCards(data);
-      }, 1000);
-    }
+    return {
+      data: updatedData,
+      matchPair: initialValue.matchPair,
+      attempts: initialValue.attempts,
+      complete: updatedCompleteIn,
+    };
+  }
 
-    //if correct cards
+  //wrong pair
+  if (action.type === "WRONG") {
+    const updatedCards = [...initialValue.data];
+    updatedCards[initialValue.matchPair[0]].status = "wrong";
+    updatedCards[action.val].status = "wrong";
+    const score = initialValue.attempts + 1;
 
-    if (
-      choosenCards.length === 1 &&
-      matchData[choosenCards[0]].id === matchData[position].id &&
-      choosenCards[0] !== position
-    ) {
-      setCompleted((prev) => prev + 1);
-      setTimeout(() => {
-        matchData[choosenCards[0]].status = "active correct";
-        matchData[position].status = "active correct";
-        setCards(matchData);
-      }, 500);
-    }
-  };
+    return {
+      data: updatedCards,
+      matchPair: initialValue.matchPair,
+      attempts: score,
+      complete: initialValue.complete,
+    };
+  }
 
-  // console.log(cards);
+  //reset Game
 
-  const resetHandler = function () {
-    setScore(0);
-    setCompleted(0);
-    setChoosenCards([]);
-    const resetCards = [...cards].sort(() => Math.random() - 0.5);
-    const resetStatus = resetCards.map((item) => {
+  if (action.type === "RESET") {
+    const updatedCards = [...initialValue.data];
+    // .sort(() => Math.random() - 0.5);
+    const resetStatus = updatedCards.map((item) => {
       return { ...item, status: "" };
     });
-    setCards(resetStatus);
+
+    return {
+      data: resetStatus,
+      matchPair: [],
+      attempts: 0,
+      complete: resetStatus.length / 2,
+    };
+  }
+
+  return initialValue;
+};
+
+//functionality
+
+function GridCards() {
+  const [cardData, dispatchCards] = useReducer(cardReducer, initialValue);
+
+  const { data, matchPair, attempts, complete } = cardData;
+
+  const choosenCardsHandler = function (position) {
+    dispatchCards({ type: "ACTIVE", val: position });
+
+    // correct pairing
+    if (matchPair.length === 1 && data[matchPair[0]].id === data[position].id) {
+      setTimeout(() => {
+        dispatchCards({ type: "CORRECT", val: position });
+      }, 800);
+    }
+
+    //incorrect pairing
+    if (matchPair.length === 1 && data[matchPair[0]].id !== data[position].id) {
+      setTimeout(() => {
+        dispatchCards({ type: "WRONG", val: position });
+      }, 800);
+    }
   };
 
-  // console.log(completed === props.cardsData.length / 2);
+  //reset functionality
+  const resetHandler = function () {
+    dispatchCards({ type: "RESET" });
+  };
 
   return (
     <>
       <Score>
         <div className="score">
           <span>Attempts:</span>
-          <span>{score}</span>
+          <span>{attempts}</span>
         </div>
+
         <button onClick={resetHandler} className="reset">
           Reset
         </button>
       </Score>
       <Layout>
-        {cards.map((item, i) => (
+        {cardData.data.map((item, i) => (
           <Card
             img={item.img}
             key={i}
@@ -99,7 +229,7 @@ function GridCards(props) {
           />
         ))}
       </Layout>
-      <Overlay complete={completed === props.cardsData.length / 2} />
+      <Overlay complete={complete === 0} />
     </>
   );
 }

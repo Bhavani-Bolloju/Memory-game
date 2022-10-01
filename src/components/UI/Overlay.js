@@ -11,7 +11,7 @@ function Overlay(props) {
       timeout={500}
       mountOnEnter
       unmountOnExit
-      classNames={{ enter: "Overlay-enter", exit: "Overlay-exit" }}
+      classNames={{ enter: "Overlay-enter", exitActive: "Overlay-exit" }}
     >
       <div className="Overlay">Game Over</div>
     </CSSTransition>

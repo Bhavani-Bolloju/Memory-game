@@ -39,6 +39,11 @@
     transform: translateY(0%);
   }
 
+  20% {
+    opacity: 1;
+    transform: translateY(10%);
+  }
+
   100% {
     opacity: 0;
     transform: translateY(-150%);
