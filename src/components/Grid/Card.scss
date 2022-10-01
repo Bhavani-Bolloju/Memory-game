@@ -44,11 +44,15 @@
     .back {
       transform: rotateY(-180deg);
     }
+
+    &:hover {
+      pointer-events: none;
+    }
   }
 
   &.active.correct {
     img {
-      backdrop-filter: contrast(0.7);
+      backdrop-filter: contrast(0.6);
     }
   }
 
