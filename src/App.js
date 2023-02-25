@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
 import GridCards from "./components/Grid/GridCards";
+import CardContextProvider from "./components/context/CardContext";
 
 function App() {
   return (
     <Wrapper>
-      <h1>Memory Game</h1>
-      <GridCards />
+      <CardContextProvider>
+        <h1>Memory Game</h1>
+        <GridCards />
+      </CardContextProvider>
     </Wrapper>
   );
 }
