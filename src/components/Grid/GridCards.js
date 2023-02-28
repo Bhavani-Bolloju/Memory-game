@@ -11,7 +11,7 @@ function GridCards() {
 
   const { data, matchPair, attempts, complete } = cards;
 
-  const choosenCardsHandler = function (position) {
+  const choosenCardsHandler = function(position) {
     dispatch({ type: "ACTIVE", val: position });
 
     // correct pairing
@@ -30,7 +30,7 @@ function GridCards() {
   };
 
   // //reset functionality
-  const resetHandler = function () {
+  const resetHandler = function() {
     dispatch({ type: "RESET" });
   };
 

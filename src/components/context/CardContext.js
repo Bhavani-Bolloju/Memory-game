@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 import { createContext } from "react";
 import { cards_data } from "./data";
 
@@ -9,7 +9,7 @@ const initialValue = {
   complete: cards_data.length / 2,
 };
 
-const cardReducer = function (initialValue, action) {
+const cardReducer = function(initialValue, action) {
   //active
   if (action.type === "ACTIVE") {
     const cardsData = [...initialValue.data];
@@ -83,12 +83,12 @@ const cardReducer = function (initialValue, action) {
 
 // export default cardReducer;
 
-const CardContext = createContext({
+export const CardContext = createContext({
   cards: null,
   dispatch: () => {},
 });
 
-const CardContextProvider = function (props) {
+const CardContextProvider = function(props) {
   const [cardData, dispatchCards] = useReducer(cardReducer, initialValue);
   // console.log(cardData);
 
@@ -106,7 +106,7 @@ const CardContextProvider = function (props) {
 
 //use card Context
 
-export const useCard = function () {
+export const useCard = function() {
   return useContext(CardContext);
 };
 
