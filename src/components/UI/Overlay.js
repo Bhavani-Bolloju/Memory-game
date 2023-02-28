@@ -1,5 +1,5 @@
 import React from "react";
-import "./Overlay.scss";
+import "./Overlay.css";
 import { CSSTransition } from "react-transition-group";
 
 function Overlay(props) {

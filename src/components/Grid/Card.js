@@ -1,8 +1,8 @@
 import React from "react";
-import "./Card.scss";
+import "./Card.css";
 
 function Card(props) {
-  const onCardHandler = function () {
+  const onCardHandler = function() {
     props.onSelect(props.id);
   };
 

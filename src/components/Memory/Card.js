@@ -1,9 +1,9 @@
 import React from "react";
-import "./Card.scss";
+import "./Card.css";
 import black from "../Images/black.jpg";
 
 function Card(props) {
-  const cardHandler = function () {
+  const cardHandler = function() {
     props.onCards(props.position);
   };
 
